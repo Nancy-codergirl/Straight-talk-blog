@@ -1,9 +1,22 @@
 body{
   overflow-x: none !important;
   font-size: 15px !important;
-  background-color: rgb(248, 246, 246) !important;
+  /* background-color: rgb(248, 246, 246) !important; */
 }
 
+.talk{
+  background-image: url(../photos/talk.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 400px;
+}
+.page{
+  color: black;
+  position: relative;
+  text-align: center;
+  margin-left: 25%;
+
+}
 footer{
   margin: 0px !important;
 }
