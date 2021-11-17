@@ -1,14 +1,36 @@
-from flask import render_template,redirect,url_for,abort,flash,request
-from app.main.forms import BlogForm
+from flask import render_template,request,redirect,url_for,abort,flash
+
+from app.email import mail_message
 from . import main
-from .. import db
-from ..models import  User,Blog
 from flask_login import login_required,current_user
+from ..models import Upvote, User,Blog,Comment,Downvote
+from .forms import UpdateProfile,BlogForm,CommentForm,UpdateBlog
+from .. import db,photos
 
 
-#Views
+@main.route('/')
+def index():
+    blogs = Blog.query.all()
+    general = Blog.query.filter_by(category = 'General').all()
+    politics = Blog.query.filter_by(category = 'Politics').all()
+    religion = Blog.query.filter_by(category = 'Religion').all()
+    relationships = Blog.query.filter_by(category = 'Relationships').all()
+    
+    return render_template('index.html',blogs=blogs,general=general,politics=politics,religion=religion,relationships=relationships)
 
-#Deleting a blog view function
+@main.route('/create_new',methods=['POST','GET'])
+@login_required
+def new_blog():
+    form = BlogForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        post = form.post.data   
+        new_blog =Blog(title = title,post=post,user=current_user)
+        new_blog.save_blog()
+        return redirect(url_for('main.index'))
+    
+    return render_template('new_blog.html',form=form, title="Create Blog")
+
 @main.route('/blog/<int:id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_blog(id):
@@ -21,8 +43,6 @@ def delete_blog(id):
     db.session.commit()
     return redirect(url_for('main.index', username=current_user.username))
 
-
-#Updating blog view function
 @main.route('/update/<int:id>', methods=['GET', 'POST'])
 @login_required
 def update_blog(id):
@@ -39,3 +59,4 @@ def update_blog(id):
         update_form.title.data = blog.title
         update_form.description.data = blog.description
     return render_template('update.html', blog=blog, update_form=update_form)
+

@@ -4,7 +4,7 @@ from wtforms.validators import Required
 
 class BlogForm(FlaskForm):
     title = StringField('Title', validators=[Required()])
-    # category = SelectField('Category', choices=[('Advertisement','Advertisement'),('Interview','Interview'),('Product','Product'),('Technology','Technology')],validators=[Required()])
+    category = SelectField('Category', choices=[('General','General'),('Religion','Religion'),('Politics','Politics'),('Relationships',' Relationships')],validators=[Required()])
     post = TextAreaField('Your Blog', validators=[Required()],render_kw={'class': 'form-control', 'rows': 5})
     submit = SubmitField('Submit Blog')
     
