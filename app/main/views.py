@@ -10,7 +10,7 @@ from .. import db,photos
 
 @main.route('/')
 def index():
-    blogs = Blog.query.all()
+    blogs = Blog.query.order_by(Blog.time.desc()).all()
     general = Blog.query.filter_by(category = 'General').all()
     politics = Blog.query.filter_by(category = 'Politics').all()
     religion = Blog.query.filter_by(category = 'Religion').all()
@@ -25,7 +25,8 @@ def new_blog():
     if form.validate_on_submit():
         title = form.title.data
         post = form.post.data   
-        new_blog =Blog(title = title,post=post,user=current_user)
+        category = form.category.data
+        new_blog =Blog(title = title,post=post,user=current_user,category=category)
         new_blog.save_blog()
         return redirect(url_for('main.index'))
     
@@ -62,24 +63,47 @@ def update_blog(id):
 
 
 
-# @main.route('/comment/<int:blog_id>',methods = ['POST','GET'])
-# @login_required
-# def comment(blog_id):
-#     form = CommentForm()
-#     blog = Blog.query.get(blog_id)
-#     comments = Comment.query.filter_by(blog_id=blog_id).all()
-#     if form.validate_on_submit():
-#         comment= form.comment.data
-#         new_comment= Comment(comment=comment,blog_id=blog_id)
-#         new_comment.save_comment()
-#         blog_id=blog_id
-#         return redirect(url_for('.comment',blog_id=blog_id))
-#     return render_template('comment.html',form=form,comments=comments)
+@main.route('/comment/<int:blog_id>',methods = ['POST','GET'])
+@login_required
+def comment(blog_id):
+    form = CommentForm()
+    blog = Blog.query.get(blog_id)
+    comments = Comment.query.filter_by(blog_id=blog_id).all()
+    if form.validate_on_submit():
+        comment= form.comment.data
+        new_comment= Comment(comment=comment,blog_id=blog_id)
+        new_comment.save_comment()
+        blog_id=blog_id
+        return redirect(url_for('.comment',blog_id=blog_id))
+    return render_template('comment.html',form=form,comments=comments)
 
 
 @main.route('/read/<int:blog_id>')
-@login_required
 def read(blog_id):
     blog = Blog.query.get(blog_id)
-    
     return render_template('read.html',blog=blog)
+
+@main.route("/update_post/<int:blog_id>",methods= ['POST','GET'])
+@login_required
+def update_post(blog_id):
+    blog = Blog.query.get(blog_id)
+    form = UpdateBlog()
+    if form.validate_on_submit():
+        blog.title =form.title.data
+        blog.post = form.post.data
+        db.session.commit()
+        flash('Your post has been updated!',)
+        return redirect(url_for('main.read',blog_id=blog_id))
+    elif request.method == 'GET':
+        form.title.data = blog.title
+        form.post.data = blog.post
+    return render_template('new_blog.html',form=form, titl='Update Blog')
+
+@main.route("/delete_post/<int:blog_id>/delete",methods= ['POST'])
+@login_required
+def delete_post(blog_id):
+    blog_delete = Blog.query.get(blog_id)
+    db.session.delete(blog_delete)
+    db.session.commit()
+    flash('Your blog has been deleted!')
+    return redirect(url_for('main.index'))
