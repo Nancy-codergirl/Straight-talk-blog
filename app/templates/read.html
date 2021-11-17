@@ -1,0 +1,74 @@
+{% extends 'base.html'%}
+<!-- Styles block -->
+{% block styles%}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+{% endblock %}
+<!-- Content block -->
+{% block content %}
+<!-- <div class="logo">
+    <h1 class="navbar-bran pt-5">STRAIGHT-TALK</h1>
+</div> -->
+<div class="container">
+    <div class="row  blogs mt-2">
+        <div class="col-md-10" id="pitches"><br>
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="blog-details">
+                        <p>Blog by: <strong>{{ blog.user.username }}</strong> </p>
+                        <small class="text-muted">Posted on {{ blog.time.strftime('%Y-%m-%d') }}</small>
+                    </div>
+                    <h5 class="blog-title">{{ blog.title }}</h5>
+                    <p class="blog-article">{{ blog.post }}</p>
+                    <div class="ml-2">
+                        <span>
+                            <a class="ml-5" href="#"><span style="font-size: 1em"><i
+                                        class="fas fa-heart text-danger"></i></span>
+                                {{blog.upvote.count()}}
+                            </a>
+                        </span>
+                        <span>
+                            <a class="ml-5" href="#"><span style="font-size: 1em;"><i
+                                        class="fas fa-comment text-info"></i></span>
+                                {{blog.comment.count()}}
+                            </a>
+                        </span>
+                        {% if blog.user == current_user %}
+                        <span class=" edit">
+                            <a class="mt-1 mb-1 ml-5" href="#">
+                                <span style="font-size: 1em;  color:#5bc0de"><i class="fas fa-edit"></i>
+                            </a>
+                            <a type="button" class="pl-2" data-toggle="modal" data-target=".deleteModal-modal-sm"> <span
+                                    style="font-size: 1em;  color:red"><i class="fas fa-trash-alt"></i></a>
+                        </span>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </article>
+
+            <div class="modal fade deleteModal-modal-sm" id="" tabindex="-1" role="dialog"
+                aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p class="modal-title" id="deleteModalLabel">Are you sure you want to delete?</p>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <form action="" method="POST">
+                                <input class="btn btn-danger btn-sm" type="submit" value="Delete">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </article>
+        </div>
+
+    </div>
+</div>
+{% endblock%}

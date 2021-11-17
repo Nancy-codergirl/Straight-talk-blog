@@ -60,3 +60,26 @@ def update_blog(id):
         update_form.description.data = blog.description
     return render_template('update.html', blog=blog, update_form=update_form)
 
+
+
+# @main.route('/comment/<int:blog_id>',methods = ['POST','GET'])
+# @login_required
+# def comment(blog_id):
+#     form = CommentForm()
+#     blog = Blog.query.get(blog_id)
+#     comments = Comment.query.filter_by(blog_id=blog_id).all()
+#     if form.validate_on_submit():
+#         comment= form.comment.data
+#         new_comment= Comment(comment=comment,blog_id=blog_id)
+#         new_comment.save_comment()
+#         blog_id=blog_id
+#         return redirect(url_for('.comment',blog_id=blog_id))
+#     return render_template('comment.html',form=form,comments=comments)
+
+
+@main.route('/read/<int:blog_id>')
+@login_required
+def read(blog_id):
+    blog = Blog.query.get(blog_id)
+    
+    return render_template('read.html',blog=blog)
