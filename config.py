@@ -34,4 +34,3 @@ config_options = {
 'production':ProdConfig,
 'test':TestConfig
 }
-

@@ -1,0 +1,6 @@
+<a style="margin-left: 20px" href="/blog/{{blog.id}}?like=1"><br><br>
+    <i class="far fa-thumbs-up"></i>
+</a>{{blog.likes}} <a href="/blog/{{blog.id}}?dislike=1"><br><br>
+    <i class="far fa-thumbs-down"></i>
+</a>{{blog.dislikes}}</span>
+   {% if blog.username == current_user.username %}
