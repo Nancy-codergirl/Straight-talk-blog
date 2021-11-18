@@ -131,3 +131,25 @@ def delete_comment(comment_id,blog_id):
     db.session.commit()
     flash('Comment has been deleted!')
     return redirect(url_for('.comment', blog_id = blog_id))
+
+@main.route('/blog/<int:id>', methods = ['GET','POST'])
+def blog(id):
+    blog = Blog.get_blog(id)
+    posted_date = blog.time.strftime('%b %d, %Y')
+
+    if request.args.get("like"):
+        blog.likes = blog.likes + 1
+
+        db.session.add(blog)
+        db.session.commit()
+
+        return redirect("/blog/{blog_id}".format(blog_id=blog.id))
+
+    elif request.args.get("dislike"):
+        blog.dislikes = blog.dislikes + 1
+
+        db.session.add(blog)
+        db.session.commit()
+
+        return redirect("/blog/{blog_id}".format(blog_id=blog.id))
+    
