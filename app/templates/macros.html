@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+{% macro displayBlog(blogs) %}
+<div class="row">
+    {%if blogs%}
+    {% for blog in blogs %}
+    <div class="col-md-5 p-0">
+      <div
+        class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative card-holder m-1">
+        <div class="col p-2 d-flex flex-column position-static">
+          <div class="blog-details pl-2">
+            <p><b>Blog by: </b><a href="#">{{ blog.user.username }}</a> </p>
+            <small class="text-muted m-0 p-0">Posted on {{ blog.time.strftime('%Y-%m-%d') }}</small>
+          </div>
+          <h3 class="mb-0">{{blog.title}}</h3>
+          <p class="card-text mb-auto p-0">{{blog.post|truncate(100)}}</p>
+          <a href="{{url_for('main.read',blog_id=blog.id)}}" class="stretched-link m-0 p-0">Read more...</a>
+        </div>
+        <div class="col-auto p-0 d-none d-lg-block">
+          <img class="bd-placeholder-img" width="150" height="250"
+            src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" role="img"
+            preserveAspectRatio="xMidYMid slice" focusable="false">
+          <rect width="100%" height="100%" />
+
+        </div>
+      </div>
+    </div>
+
+    {%endfor%}
+    {%else%}
+    <div class="card">
+        <div class="card-body"> 
+          <p class="card-title">No blogs in this category yet</p>
+        </div>
+      </div>
+    {%endif%}
+
+  </div>
+{% endmacro %}

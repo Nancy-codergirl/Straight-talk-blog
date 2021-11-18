@@ -1,163 +1,128 @@
 {% extends 'base.html'%}
+{% import 'macros.html' as macro%}
 <!-- Styles block -->
 {% block styles%}
-    {{ super() }}
-    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
 {% endblock %}
 <!-- Content block -->
 {% block content %}
-    
-        <div  class="container pt-3">
-            {% for message in get_flashed_messages() %}
-            <div class="alert alert-info">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
-            </div>
-          {% endfor %}
-            
-            
-        </div>
-       
-        
-        <main class="container">
-          <div class="p-4 talk p-md-5 mb-4 text-white rounded">
-            <div class="page col-md-6 px-0">
-              <h1 class="display-4 fst-italic">Straight-Talk</h1>
-              <!-- <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p> -->
-            </div>
-          </div>
-        </main>
-        <main class="my-5">
-          <div class="container">
-            <!--Section: Content-->
-            <section class="text-center">
-              <h4 class="mb-5"><strong>Latest posts</strong></h4>
-              <div class="container">
-                <div class=" py-1 col-md-10 mb-2">
-                  <nav class="nav">
-                    <ul class="nav nav-tabs">
-                      <li class="nav-item" >
-                          <a class="nav-link title active" data-toggle="tab" href="#pitches"><strong>All Blogs</strong> </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link title"  data-toggle="tab" href="#advertisement">General</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link title"  data-toggle="tab" href="#interview">Religion</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link title" data-toggle="tab" href="#product">Politics</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link title" data-toggle="tab" href="#technology">Relationships</a>
-                      </li>
-                  </ul>
-                  </nav>
-                </div>
-              </div>
-              <div class="row p-1">
-                {% for blog in blogs %}
-                <div class="col-md-6">
-                  <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                    <div class="col p-4 d-flex flex-column position-static">
-                      <strong class="d-inline-block mb-2 text-primary">{{blog.user.username}}</strong>
-                      <div class="mb-1 text-muted">{{ blog.time.strftime('%Y-%m-%d') }}</div>
-                      <h3 class="mb-0">{{blog.title}}</h3>
-                      <p class="card-text mb-auto">{{blog.post|truncate(100)}}</p>
-                      <a href="{{url_for('main.read',blog_id=blog.id)}}" class="stretched-link">Continue reading</a>
-                    </div>
-                    <div class="col-auto p-0 d-none d-lg-block">
-                      <img class="bd-placeholder-img" width="200" height="250" src="https://mdbootstrap.com/img/new/standard/nature/184.jpg" role="img" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" />
-            
-                    </div>
-                  </div>
-                </div>
-               
-                {%endfor%}
-              
-              </div>
-      
 
-      
-            </section>
-            <!--Section: Content-->
-      
-            <!-- Pagination -->
-            <nav class="my-4" aria-label="...">
-              <ul class="pagination pagination-circle justify-content-center">
-                <li class="page-item">
-                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active" aria-current="page">
-                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#">Next</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </main>
+<div class="container">
 
+</div>
+<div class="talk text-white rounded">
+  {% for message in get_flashed_messages() %}
+  <div class="alert alert-info">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+  </div>
+  {% endfor %}
+    <h1 class="display-4 fst-italic text-dark pt-5">StraightTalk</h1>
+    <!-- <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p> -->
+</div>
 
-  <footer class="page-footer font-small container-fluid m-0 text-center bg-dark cyan darken-3">
-
-    <!-- Footer Elements -->
+<main class="my-5">
+  <div class="container-fluid blog-post">
+    <!--Section: Content-->
+    <h4 class="mb-2 text-center col-md-10"><strong>Latest posts</strong></h4>
     <div class="">
-  
-      <!-- Grid row-->
-      <div class="row">
-  
-        <!-- Grid column -->
-        <div class="col-md-12 py-5">
-          <div class="mb-5 text-white flex-center">
-  
-            <!-- Facebook -->
-            <a class="fb-ic">
-              <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
-            <!-- Twitter -->
-            <a class="tw-ic">
-              <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
-            <!-- Google +-->
-            <a class="gplus-ic">
-              <i class="fab fa-google-plus-g fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
-            <!--Linkedin -->
-            <a class="li-ic">
-              <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
-            <!--Instagram-->
-            <a class="ins-ic">
-              <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-            </a>
-            <!--Pinterest-->
-            <a class="pin-ic">
-              <i class="fab fa-pinterest fa-lg white-text fa-2x"> </i>
-            </a>
-          </div>
-        </div>
-        <!-- Grid column -->
-  
+      <div class=" py-1 col-md-10 mb-2">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link title active" data-toggle="tab" href="#blogs"><strong>All Blogs</strong> </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link title" data-toggle="tab" href="#general">General Blogs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link title" data-toggle="tab" href="#religion">Religion Blogs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link title" data-toggle="tab" href="#politics">Political Blogs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link title" data-toggle="tab" href="#relationships">Relationships Blogs</a>
+          </li>
+        </ul>
       </div>
-      <!-- Grid row-->
-  
     </div>
-    <!-- Footer Elements -->
-  
-    <!-- Copyright -->
-    <div class="footer-copyright text-white text-center py-3">© 2020 Copyright:
-      Straight-Talk.Com
+    <div class="tab-content">
+      <div  class="container tab-pane in active" id="blogs"><br>
+          {{ macro.displayBlog(blogs) }}
+      </div>
+      <div  class="container tab-pane fade" id="general"><br>
+          {{ macro.displayBlog(general)}}
+      </div>
+      <div  class="container tab-pane fade" id="religion"><br>
+          {{ macro.displayBlog(religion) }}
+      </div>
+      <div  class="container tab-pane fade" id="politics"><br>
+          {{ macro.displayBlog(politics) }}
+          
+      </div>
+      <div  class="container tab-pane fade" id="relationships"><br>
+          {{ macro.displayBlog(relationships) }}
+          
+      </div>
+  </div>
+   
+
+    <!--Section: Content-->
+
+    <!-- Pagination -->
+    <nav class="my-4" aria-label="...">
+      <ul class="pagination pagination-circle justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active" aria-current="page">
+          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</main>
+
+
+<footer class="page-footer font-small container-fluid m-0 text-center pt-2">
+  <div class="row">
+    <div class="col-md-12 py-2">
+      <div class="mb-5 text-white flex-center">
+        <a class="fb-ic">
+          <i class="fab fa-facebook-f fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+        </a>
+        <a class="tw-ic">
+          <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+        </a>
+        <a class="gplus-ic">
+          <i class="fab fa-google-plus-g fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+        </a>
+        <a class="li-ic">
+          <i class="fab fa-linkedin-in fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+        </a>
+        <a class="ins-ic">
+          <i class="fab fa-instagram fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+        </a>
+        <a class="pin-ic">
+          <i class="fab fa-pinterest fa-lg white-text fa-2x"> </i>
+        </a>
+      </div>
     </div>
-    <!-- Copyright -->
-  
-  </footer>
-  <!-- Footer -->  
+  </div>
+
+  <div class="footer-copyright text-white text-center py-3">© 2020 Copyright:
+    Straight-Talk.Com
+  </div>
+</footer>
 
 
 
-        
+
+
 {% endblock%}
