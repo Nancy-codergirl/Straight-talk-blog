@@ -1,3 +1,3 @@
-export SECRET_KEY='brian'
+export SECRET_KEY='project'
 
-python3 manage.py server
+python3.8 manage.py server

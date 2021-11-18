@@ -1,36 +1,118 @@
 {% extends 'base.html'%}
+{% import 'macros.html' as macro%}
+{% block styles%}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+{% endblock %}
+
 {% block content %}
-<body class="bg-dark">
-  <div class="container ">
+<div class="container-fluid pt-3"> 
     <div class="row">
-    <!-- displaying  Username-->
-      <div class="col-md-4">
-        <h3> {{user.username| capitalize}} </h3>
-        <!--Displaying user bio-->
-        {% if user.bio %}
-          <p> {{user.bio}}</p>
-        {%else%}
-          <p> {{user.username| capitalize}} has no bio </p>
-        {% endif %}
-        {%if user == current_user %}
-        <a href="{{url_for('main.update_profile',uname=user.username)}}">Edit Profile</a>
-        {%endif%}
-      </div>
-      <!--Display profile photo-->
-      <div class="col-md-4">
-        {% if user.profile_pic_path %}
-        <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt="" class="img-thumbnail">
-        {%else%}
-        <p>No profile picture</p>
-        {% endif %}
-        {% if user == current_user %}
-        <form  action="{{url_for('main.update_pic',uname=user.username)}}" method="post" enctype = "multipart/form-data">
-          <input type="file"  name="photo" class="form-control" required>
-          <input type="submit">
-        </form>
-        {% endif %}
-      </div>
+        <div class="col-md-6">
+            <h5 class="title">My Profile</h5>
+            <div class="content-section">
+                <div class="media">
+                    {% if user.profile_pic_path %}
+
+                    <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt=""
+                        class="img-thumbnail rounded-circle profile-photo">
+
+                    {%else%}
+                    <img src="{{url_for('static', filename='photos/default.png')}}" alt=""
+                        class="img-thumbnail rounded-circle profile-photo">
+                    {% endif %}
+                    <div class="media-body">
+                        <h2 class="account-heading">{{ current_user.username }}</h2>
+                        <p class="text-secondary">{{ current_user.email }}</p>
+                    </div>
+                </div>
+                {% if user.bio %}
+                <p> {{user.bio}}</p>
+                {%else%}
+                <p> {{user.username| capitalize}} has no bio </p>
+                {% endif %}
+                {% if user == current_user %}
+                <a href="{{url_for('main.update_profile',uname=user.username)}}">Click Here to Update Bio</a>
+                <form class="mt-4" action="{{url_for('main.update_pic',uname=user.username)}}" method="post"
+                    enctype="multipart/form-data">
+                    <p class="title ">Update Profile photo</p>
+                    <input type="file" name="photo" class="form-control" required><br>
+                    <input type="submit" class="btn btn-sm btn-info" value="Update">
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+            <h5 class="title">My Blogs</h5>
+            {% if user == current_user %}
+            {%if blogs%}
+            {% for blog in blogs %}
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="blog-details">
+                        <p>Blog by: <strong>{{ blog.user.username }}</strong> </p>
+                        <small class="text-muted">Posted on {{ blog.time.strftime('%Y-%m-%d') }}</small>
+                    </div>
+                    <h5 class="blog-title">{{ blog.title }}</h5>
+                    <p class="blog-article">{{ blog.post }}</p>
+                    <div class="ml-2">
+                        <span>
+                            <a class="ml-5" href="{{url_for('main.upvote',id = blog.id)}}"><span style="font-size: 1em"><i
+                                        class="fas fa-heart text-danger"></i></span>
+                                {{blog.upvote.count()}}
+                            </a>
+                        </span>
+                        <span>
+                            <a class="ml-5" href="{{url_for('main.comment',blog_id=blog.id)}}"><span
+                                    style="font-size: 1em;"><i class="fas fa-comment text-info"></i></span>
+                                {{blog.comment.count()}}
+                            </a>
+                        </span>
+                        {% if blog.user == current_user %}
+                        <span class=" edit">
+                            <a class="mt-1 mb-1 ml-5" href="{{ url_for('main.update_post', blog_id=blog.id) }}">
+                                <span style="font-size: 1em;  color:#5bc0de"><i class="fas fa-edit"></i>
+                            </a>
+                            <a type="button" class="pl-2" data-toggle="modal" data-target=".deleteModal-modal-sm"> <span
+                                    style="font-size: 1em;  color:red"><i class="fas fa-trash-alt"></i></a>
+                        </span>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </article>
+
+            <div class="modal fade deleteModal-modal-sm" id="" tabindex="-1" role="dialog"
+                aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <p class="modal-title" id="deleteModalLabel">Are you sure you want to delete?</p>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                            <form action="{{url_for('main.delete_post', blog_id = blog.id) }}" method="POST">
+                                <input class="btn btn-danger btn-sm" type="submit" value="Delete">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </article>
+            {%endfor%}
+            {%else%}
+            <div class="content-section">
+                You have no blogs 
+            </div>
+
+            {%endif%}
+           
+            {% endif %}
+        </div>
     </div>
-  </div>
-</body>
+</div>
 {% endblock %}

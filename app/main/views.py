@@ -22,9 +22,11 @@ def index():
 @main.route('/user/<uname>')
 def profile(uname):
     user = User.query.filter_by(username = uname).first()
+    blogs = Blog.query.filter_by(user=current_user).all()
+
     if user is None:
         abort(404)
-    return render_template("profile/profile.html", user = user)
+    return render_template("profile/profile.html", blogs=blogs, user = user)
 
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
@@ -168,7 +170,7 @@ def delete_comment(comment_id,blog_id):
     db.session.delete(comment)
     db.session.commit()
     flash('Comment has been deleted!')
-    return redirect(url_for('.comment', blog_id = blog_id))
+    return redirect(url_for('.read', blog_id = blog_id))
 
 @main.route('/blog/<int:id>', methods = ['GET','POST'])
 def blog(id):
