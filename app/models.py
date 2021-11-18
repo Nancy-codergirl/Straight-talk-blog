@@ -18,6 +18,8 @@ class User(db.Model,UserMixin):
     profile_pic_path = db.Column(db.String())
     blogs = db.relationship('Blog', backref='user', lazy='dynamic')
     comment = db.relationship('Comment', backref='user', lazy='dynamic')
+    upvote = db.relationship("Upvote",backref="user",lazy="dynamic")
+    downvote = db.relationship("Downvote",backref="user",lazy="dynamic")
     
     @property
     def password(self):
@@ -40,8 +42,11 @@ class Blog(db.Model):
     title = db.Column(db.String(255))
     post = db.Column(db.Text())
     time = db.Column(db.DateTime, default = datetime.utcnow)
+    category = db.Column(db.String(255), index = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    comment = db.relationship('Comment', backref='user', lazy='dynamic')
+    comment = db.relationship('Comment', backref='blog', lazy='dynamic')
+    upvote = db.relationship("Upvote",backref="blog",lazy="dynamic")
+    downvote = db.relationship("Downvote",backref="blog",lazy="dynamic")
         
     def save_blog(self):
         db.session.add(self)
@@ -49,7 +54,7 @@ class Blog(db.Model):
 
         
     def __repr__(self):
-        return f'Pitch {self.post}'
+        return f'Blog {self.post}'
     
 class Comment(db.Model):
     __tablename__ = "comments"
@@ -109,4 +114,3 @@ class Downvote(db.Model):
 
     def __repr__(self):
         return f'{self.user_id}:{self.blog_id}'
-   
