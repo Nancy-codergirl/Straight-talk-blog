@@ -9,10 +9,23 @@
 <!-- <div class="logo">
     <h1 class="navbar-bran pt-5">STRAIGHT-TALK</h1>
 </div> -->
-<div class="container">
-    <div class="row  blogs mt-2">
+<div class="container mt-1">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <div class="row  blogs">
         <div class="col-md-10" id="pitches"><br>
+            <h5 class="title">Read Blog by {{ blog.user.username }}</h5>
             <article class="media content-section">
+                {% if blog.user.profile_pic_path %}
+                <img src="#" alt="" class="rounded-circle blog-profile">
+                {%else%}
+                <img src="{{url_for('static', filename='photos/default.jpeg')}}" alt=""
+                    class="rounded-circle blog-profile">
+                {% endif %}
                 <div class="media-body">
                     <div class="blog-details">
                         <p>Blog by: <strong>{{ blog.user.username }}</strong> </p>
@@ -22,20 +35,20 @@
                     <p class="blog-article">{{ blog.post }}</p>
                     <div class="ml-2">
                         <span>
-                            <a class="ml-5" href="#"><span style="font-size: 1em"><i
+                            <a class="ml-5" href="{{url_for('main.upvote',id = blog.id)}}"><span style="font-size: 1em"><i
                                         class="fas fa-heart text-danger"></i></span>
                                 {{blog.upvote.count()}}
                             </a>
                         </span>
                         <span>
-                            <a class="ml-5" href="#"><span style="font-size: 1em;"><i
-                                        class="fas fa-comment text-info"></i></span>
+                            <a class="ml-5" href="{{url_for('main.comment',blog_id=blog.id)}}"><span
+                                    style="font-size: 1em;"><i class="fas fa-comment text-info"></i></span>
                                 {{blog.comment.count()}}
                             </a>
                         </span>
                         {% if blog.user == current_user %}
                         <span class=" edit">
-                            <a class="mt-1 mb-1 ml-5" href="#">
+                            <a class="mt-1 mb-1 ml-5" href="{{ url_for('main.update_post', blog_id=blog.id) }}">
                                 <span style="font-size: 1em;  color:#5bc0de"><i class="fas fa-edit"></i>
                             </a>
                             <a type="button" class="pl-2" data-toggle="modal" data-target=".deleteModal-modal-sm"> <span
@@ -59,7 +72,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                            <form action="" method="POST">
+                            <form action="{{url_for('main.delete_post', blog_id = blog.id) }}" method="POST">
                                 <input class="btn btn-danger btn-sm" type="submit" value="Delete">
                             </form>
                         </div>
