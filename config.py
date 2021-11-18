@@ -3,7 +3,7 @@ import os
 class Config:
 
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:pass@localhost/blogger'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:kipgeno@localhost/blog'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOADED_PHOTOS_DEST ='app/static/photos'
     MAIL_SERVER = 'smtp.googlemail.com'
@@ -15,7 +15,7 @@ class Config:
     SIMPLEMDE_USE_CDN = True
 
 class TestConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:pass@localhost/blogger_test'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:kipngeno@localhost/blogger_test'
     DEBUG = True
     
 class ProdConfig(Config):
@@ -26,7 +26,7 @@ class ProdConfig(Config):
     pass
 
 class DevConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:pass@localhost/blogger'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:kipngeno@localhost/blog'
     DEBUG = True
 
 config_options = {
