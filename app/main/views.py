@@ -75,7 +75,7 @@ def comment(blog_id):
         new_comment.save_comment()
         blog_id=blog_id
         return redirect(url_for('.comment',blog_id=blog_id))
-    return render_template('comment.html',form=form,comments=comments)
+    return render_template('comment.html',form=form,comments=comments,blog=blog)
 
 
 @main.route('/read/<int:blog_id>')
@@ -107,3 +107,27 @@ def delete_post(blog_id):
     db.session.commit()
     flash('Your blog has been deleted!')
     return redirect(url_for('main.index'))
+
+@main.route('/like/<int:id>',methods = ['POST','GET'])
+@login_required
+def upvote(id):
+    blogs = Upvote.get_upvotes(id)
+    user_id = f'{current_user.id}:{id}'
+    for pitch in blogs:
+        to_string = f'{pitch}'
+        if user_id == to_string:
+            return redirect(url_for('main.read',blog_id=id))
+        else:
+            continue
+    new_vote = Upvote(user = current_user, blog_id=id)
+    new_vote.save()
+    return redirect(url_for('main.read',blog_id=id))
+
+@main.route("/delete_comment/<int:blog_id>/<int:comment_id>",methods= ['POST'])
+@login_required
+def delete_comment(comment_id,blog_id):
+    comment = Comment.query.filter_by(id=comment_id).first()
+    db.session.delete(comment)
+    db.session.commit()
+    flash('Comment has been deleted!')
+    return redirect(url_for('.comment', blog_id = blog_id))

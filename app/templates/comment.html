@@ -9,7 +9,7 @@
     <div class="row">
         {% if comments %}
         <div class="col-md-6">
-            <h3 class="text-center title italic">Comments for the Post</h3>
+            <h3 class="text-center title italic">Comments for {{ blog.title }}</h3>
             {% for message in get_flashed_messages() %}
             <div class="alert alert-info">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -17,13 +17,13 @@
             </div>
             {% endfor %}
             {% for comment in comments %}
-            <article class="media content-section">
-                <div class="media-body">
-                  <div class="blog-details">
+            <article class="comment p-1 m-1">
+                <div class="">
+                  <div class="">
                     <a class="mr-2" href="#">{{comment.user.username}}</a>
                   </div>
-                  <h5 class="blog-title">{{ comment.blog.title }}</h5>
-                  <p class="blog-article">{{ comment.comment }}</p>
+                  
+                  <p class="m-0">{{ comment.comment }}</p>
                   <div>
                     <a type="button" class="pl-2" data-toggle="modal" data-target=".deleteModal-modal-sm"> <span
                         style="font-size: 1em;  color:red"><i class="fas fa-trash-alt"></i></a>
@@ -41,7 +41,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                            <form action="#" method="POST">
+                            <form action="{{ url_for('main.delete_comment',blog_id=blog.id,comment_id = comment.id) }}" method="POST">
                                 <input class="btn btn-danger btn-sm" type="submit" value="Delete">
                             </form>
                         </div>
@@ -60,7 +60,7 @@
     </div>
     {%else%}
     <div class="no-comment col-md-5">
-        <h3 class="text-center title italic">Comments for the Post</h3>
+        <h3 class="text-center title italic">Comments for {{ blog.title }}</h3>
         <div class="card">
             <div class="card-body">
                 <p class="card-title">No Comments found for this post</p>

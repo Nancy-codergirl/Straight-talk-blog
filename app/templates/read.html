@@ -35,7 +35,7 @@
                     <p class="blog-article">{{ blog.post }}</p>
                     <div class="ml-2">
                         <span>
-                            <a class="ml-5" href="#"><span style="font-size: 1em"><i
+                            <a class="ml-5" href="{{url_for('main.upvote',id = blog.id)}}"><span style="font-size: 1em"><i
                                         class="fas fa-heart text-danger"></i></span>
                                 {{blog.upvote.count()}}
                             </a>
