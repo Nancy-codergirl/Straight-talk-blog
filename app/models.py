@@ -42,8 +42,6 @@ class Blog(db.Model):
     time = db.Column(db.DateTime, default = datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comment = db.relationship('Comment', backref='user', lazy='dynamic')
-    # likes = db.Column(db.Integer)
-    # dislikes = db.Column(db.Integer)
     likes = db.Column(db.Integer)
     dislikes = db.Column(db.Integer)
     
